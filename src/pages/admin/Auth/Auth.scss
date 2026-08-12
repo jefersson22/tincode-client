@@ -1,0 +1,234 @@
+// ==========================================
+// Auth.scss - Login y Registro (diseño moderno de 2 paneles)
+// ==========================================
+
+// Importa tus colores globales
+@import "../../../scss/index.scss";
+
+$radius: 12px;
+$transition: all 0.25s ease;
+$text-muted: rgba($text-light, 0.6);
+
+.auth-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background-color: $background-dark;
+}
+
+// ---------- Panel de marca ----------
+.auth-panel--brand {
+  display: none;
+
+  @media (min-width: 900px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    position: relative;
+    background: linear-gradient(160deg, $background-dark 0%, $primary 180%);
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba($primary, 0.25);
+      top: -150px;
+      right: -150px;
+    }
+  }
+}
+
+.auth-panel__content {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+  padding: 2rem;
+  text-align: center;
+  color: $text-light;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: $text-muted;
+    line-height: 1.5;
+  }
+}
+
+.auth-panel__logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+// ---------- Panel de formulario ----------
+.auth-panel--form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 400px;
+  background: $background-dark-web;
+  border: 1px solid rgba($border-grey, 0.25);
+  border-radius: $radius;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+// ---------- Tabs Login / Registro ----------
+.auth-tabs {
+  position: relative;
+  display: flex;
+  background: rgba($border-grey, 0.15);
+  border-radius: $radius;
+  padding: 4px;
+  margin-bottom: 1.75rem;
+
+  button {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    padding: 0.6rem 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: calc(#{$radius} - 4px);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-muted;
+    cursor: pointer;
+    transition: color 0.25s ease;
+
+    &.active {
+      color: $text-light;
+    }
+  }
+
+  &__indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: $primary;
+    border-radius: calc(#{$radius} - 4px);
+    transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}
+
+// ---------- Formulario ----------
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: $text-muted;
+  }
+
+  input {
+    padding: 0.7rem 0.85rem;
+    background-color: rgba($text-light, 0.04);
+    color: $text-light;
+    border: 1px solid rgba($border-grey, 0.35);
+    border-radius: $radius;
+    font-size: 0.95rem;
+    transition: $transition;
+
+    &::placeholder {
+      color: rgba($text-light, 0.3);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      background-color: rgba($primary, 0.06);
+      box-shadow: 0 0 0 3px rgba($primary, 0.18);
+    }
+
+    &.input-error {
+      border-color: $error;
+    }
+  }
+
+  .field-error {
+    font-size: 0.75rem;
+    color: $error;
+  }
+}
+
+.auth-form__options {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.4rem;
+
+  a {
+    font-size: 0.8rem;
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-form__message {
+  text-align: center;
+  font-size: 0.85rem;
+  margin: 0;
+
+  &.error {
+    color: $error;
+  }
+
+  &.success {
+    color: $success;
+  }
+}
+
+.auth-submit {
+  margin-top: 0.25rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, $primary, $primary-hover);
+  color: $text-light;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

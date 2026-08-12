@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;600&display=swap");
+
+.tc-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Space Grotesk", sans-serif;
+  line-height: 1;
+  user-select: none;
+  
+  &_mark {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    padding: 4px 7px;
+    border-radius: 8px;
+    letter-spacing: -0.02em;
+  }
+  
+  &_text {
+    font-weight: 500;
+    strong {
+      font-weight: 700;
+    }
+  }
+  
+  // Variante para fondos claros (TopBar)
+  &--navy {
+    color: #0f2c5c;
+    .tc-logo_mark {
+      background: #0f2c5c;
+      color: #7dd3fc;
+    }
+  }
+  
+  // Variante para fondos oscuros (Footer)
+  &--white {
+    color: #fff;
+    .tc-logo_mark {
+      background: rgba(255, 255, 255, 0.12);
+      color: #7dd3fc;
+    }
+  }
+  
+  // Tamaños
+  &--sm {
+    font-size: 1rem;
+    .tc-logo_mark {
+      font-size: 0.8rem;
+      padding: 2px 5px;
+    }
+  }
+  
+  &--md {
+    font-size: 1.35rem;
+    .tc-logo_mark {
+      font-size: 1rem;
+    }
+  }
+  
+  &--lg {
+    font-size: 1.75rem;
+    .tc-logo_mark {
+      font-size: 1.2rem;
+      padding: 5px 9px;
+    }
+  }
+}

@@ -1,0 +1,343 @@
+.courses-page {
+  width: 100%;
+
+  &_toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &_filters {
+    display: flex;
+    gap: 8px;
+
+    button {
+      background: white;
+      border: 1px solid #e5e9f2;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #64748b;
+      cursor: pointer;
+
+      &.active {
+        background: #0b2f6b;
+        color: white;
+        border-color: #0b2f6b;
+      }
+    }
+  }
+
+  &_actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  &_new-btn {
+    background: linear-gradient(135deg, #3b95ff, #0b2f6b);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &_state {
+    color: #8a94a6;
+    font-size: 14px;
+    padding: 24px 0;
+
+    &--error {
+      color: #e74c3c;
+    }
+  }
+
+  &_total {
+    font-size: 13px;
+    color: #8a94a6;
+    margin-bottom: 12px;
+  }
+}
+
+.courses-page_search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.courses-page_search-icon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.courses-page_search {
+  background-color: white !important;
+  color: #0f172a !important;
+  padding: 9px 14px 9px 36px !important;
+  border-radius: 8px;
+  border: 1px solid #e5e9f2;
+  font-size: 13px;
+  width: 240px;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #3b95ff;
+  }
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.course-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(11, 47, 107, 0.06);
+  border: 1px solid #eef1f7;
+
+  &_image {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, #0b2f6b, #3b95ff);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  &_status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+
+    &--active {
+      background: #e6f7ee;
+      color: #16a34a;
+    }
+
+    &--inactive {
+      background: #fdecea;
+      color: #e74c3c;
+    }
+  }
+
+  &_score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  &_body {
+    padding: 16px;
+  }
+
+  &_title {
+    margin: 0 0 6px;
+    font-size: 15px;
+    color: #0b2f6b;
+  }
+
+  &_description {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: #8a94a6;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &_meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 12px;
+
+    .price {
+      font-weight: 700;
+      color: #0b2f6b;
+    }
+  }
+
+  &_link {
+    font-size: 11px;
+    color: #3b95ff;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &_actions {
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+
+    button {
+      flex: 1;
+      background: #f8fafc;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 0;
+      cursor: pointer;
+      font-size: 14px;
+
+      &:hover {
+        background: #eef2f7;
+      }
+
+      &.danger:hover {
+        background: #fdecea;
+      }
+    }
+  }
+}
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 47, 107, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirm-box {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 320px;
+  text-align: center;
+
+  p {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: #334155;
+  }
+
+  &_actions {
+    display: flex;
+    gap: 10px;
+
+    button {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #f1f5f9;
+
+      &.danger {
+        background: #e74c3c;
+        color: white;
+      }
+    }
+  }
+}
+
+.courses-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+
+  &_nav {
+    background: white;
+    border: 1px solid #e5e9f2;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #0b2f6b;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: #f1f5f9;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &_pages {
+    display: flex;
+    gap: 4px;
+
+    button {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid #e5e9f2;
+      background: white;
+      color: #334155;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f1f5f9;
+      }
+
+      &.active {
+        background: linear-gradient(135deg, #3b95ff, #0b2f6b);
+        color: white;
+        border-color: transparent;
+      }
+    }
+  }
+}

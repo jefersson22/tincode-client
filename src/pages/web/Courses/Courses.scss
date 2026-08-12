@@ -1,0 +1,210 @@
+@import url("https://fonts.googleapis.com/css?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap");
+
+.tc-courses-page {
+  font-family: "Inter", sans-serif;
+  
+  &_header {
+    text-align: center;
+    padding: 64px 24px 40px;
+    max-width: 640px;
+    margin: 0 auto;
+    
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 2.4rem;
+      color: #0f2c5c;
+      margin: 0 0 12px;
+    }
+    
+    p {
+      font-size: 1rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+  
+  &_eyebrow {
+    display: inline-block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: #2563eb;
+    background: #eff6ff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  
+  &_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+  
+  &__state {
+    text-align: center;
+    color: #94a3b8;
+    padding: 60px 0;
+    font-size: 0.95rem;
+    
+    &--error {
+      color: #ef4444;
+    }
+  }
+
+  .tc-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .tc-course-item {
+    background: #fff;
+    border: 1px solid #eef2f7;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    
+    &:hover {
+      box-shadow: 0 14px 32px rgba(15, 44, 92, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    &_image {
+      position: relative;
+      height: 170px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+    
+    &_placeholder {
+      font-size: 2.2rem;
+      opacity: 0.4;
+    }
+    
+    &_score {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    
+    &_body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      
+      h3 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.15rem;
+        color: #0f2c5c;
+        margin: 0 0 8px;
+      }
+      
+      p {
+        font-size: 0.88rem;
+        color: #64748b;
+        line-height: 1.55;
+        margin: 0 0 18px;
+        flex: 1;
+      }
+    }
+    
+    &_footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid #f1f5f9;
+    }
+    
+    &_price {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      color: #2563eb;
+      font-size: 1.05rem;
+    }
+    
+    &__cta {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0f2c5c;
+      background: #eff6ff;
+      padding: 7px 14px;
+      border-radius: 999px;
+      transition: background 0.2s ease;
+      
+      &:hover {
+        background: #dbeafe;
+      }
+      
+      &--disabled {
+        color: #94a3b8;
+        background: #f1f5f9;
+        cursor: default;
+      }
+    }
+  }
+
+  .tc-courses-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 48px;
+    
+    button {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover:not(:disabled) {
+        background: #f1f5f9;
+      }
+      
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+    
+    &_pages {
+      display: flex;
+      gap: 6px;
+      
+      button {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        
+        &.active {
+          background: #2563eb;
+          border-color: #2563eb;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

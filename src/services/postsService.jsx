@@ -1,0 +1,51 @@
+import { apiFetch } from "./apiClient";
+
+export const POST_IMAGE_BASE_URL = "http://localhost:3977/uploads/post";
+
+async function handleResponse(res) {
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.msg || data.message || "Error en la solicitud");
+  return data;
+}
+
+export async function getPostsRequest(page = 1, limit = 6) {
+  const query = new URLSearchParams({ page, limit });
+  const res = await apiFetch(`/post?${query.toString()}`);
+  return handleResponse(res);
+}
+
+export async function getPostByPathRequest(path) {
+  const query = new URLSearchParams({ path });
+  const res = await apiFetch(`/post/path?${query.toString()}`);
+  return handleResponse(res);
+}
+
+export async function createPostRequest(formValues, imageFile) {
+  const formData = new FormData();
+  formData.append("title", formValues.title);
+  formData.append("content", formValues.content);
+  formData.append("path", formValues.path);
+  
+  if (imageFile) formData.append("miniature", imageFile);
+  
+  const res = await apiFetch("/post", { method: "POST", body: formData });
+  return handleResponse(res);
+}
+
+export async function updatePostRequest(id, formValues, imageFile) {
+  const formData = new FormData();
+  formData.append("title", formValues.title);
+  formData.append("content", formValues.content);
+  formData.append("path", formValues.path);
+  
+  if (imageFile) formData.append("miniature", imageFile);
+  
+  // Cambiado de "PUT" a "PATCH" para coincidir con la ruta del backend
+  const res = await apiFetch(`/post/${id}`, { method: "PATCH", body: formData });
+  return handleResponse(res);
+}
+
+export async function deletePostRequest(id) {
+  const res = await apiFetch(`/post/${id}`, { method: "DELETE" });
+  return handleResponse(res);
+}
