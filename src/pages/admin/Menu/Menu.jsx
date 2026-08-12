@@ -12,6 +12,8 @@ const ITEMS_PER_PAGE = 6;
 
 export function Menu() {
   const { hasRole } = usePermissions();
+  const canManage = hasRole("editor") || hasRole("admin");
+
   const [menus, setMenus] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -111,7 +113,7 @@ export function Menu() {
   };
 
   return (
-    <div className="menu-page">
+    <div className="menu-page notranslate" translate="no">
       <div className="menu-page_toolbar">
         <div className="menu-page_filters">
           <button
@@ -168,7 +170,7 @@ export function Menu() {
               className="menu-page_search"
             />
           </div>
-          {hasRole("admin") && (
+          {canManage && (
             <button className="menu-page_new-btn" onClick={openCreateModal}>
               + Nuevo ítem
             </button>
@@ -199,7 +201,7 @@ export function Menu() {
             <h3 className="menu-card_name">{item.title || item.name}</h3>
             <p className="menu-card_url">{item.path || item.url}</p>
 
-            {hasRole("admin") && (
+            {canManage && (
               <div className="menu-card_actions">
                 <button onClick={() => openEditModal(item)} title="Editar">
                   ✏️

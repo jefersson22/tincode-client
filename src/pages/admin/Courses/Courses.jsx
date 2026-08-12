@@ -13,13 +13,15 @@ const ITEMS_PER_PAGE = 6;
 
 export function Courses() {
   const { hasRole } = usePermissions();
+  const canManage = hasRole("editor") || hasRole("admin");
+
   const [courses, setCourses] = useState([]);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState("all"); // all | active | inactive
+  const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
@@ -99,7 +101,7 @@ export function Courses() {
   };
 
   return (
-    <div className="courses-page">
+    <div className="courses-page notranslate" translate="no">
       <div className="courses-page_toolbar">
         <div className="courses-page_filters">
           <button
@@ -144,7 +146,7 @@ export function Courses() {
               className="courses-page_search"
             />
           </div>
-          {hasRole("admin") && (
+          {canManage && (
             <button className="courses-page_new-btn" onClick={openCreateModal}>
               + Nuevo curso
             </button>
@@ -161,7 +163,7 @@ export function Courses() {
       )}
       {!loading && !error && (
         <p className="courses-page_total">
-          {totalDocs} curso{totalDocs !== 1 ? "s" : ""} en total
+          {`${totalDocs} curso${totalDocs !== 1 ? "s" : ""} en total`}
         </p>
       )}
 
@@ -207,7 +209,7 @@ export function Courses() {
                   )}
                 </div>
 
-                {hasRole("admin") && (
+                {canManage && (
                   <div className="course-card_actions">
                     <button onClick={() => openEditModal(course)} title="Editar">
                       ✏️
