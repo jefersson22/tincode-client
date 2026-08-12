@@ -49,7 +49,7 @@ export function PostImageUploader({ value, onChange, error, existingImageUrl }) 
           <div className="post-image-uploader_placeholder">
             <span className="icon">📷</span>
             <span className="text">Haz clic para subir una imagen</span>
-            <span className="hint">JPG, PNG o WEBP máx. 3MB</span>
+            <span className="hint">JPG, PNG o WEBP máx. 10MB</span>
           </div>
         )}
       </div>

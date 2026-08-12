@@ -31,7 +31,7 @@ export function PostFormModal({ post, onClose, onSaved }) {
   const isEdit = Boolean(post);
   const [pathTouched, setPathTouched] = useState(false);
 
-  // Toma la API key configurada en .env o "no-api-key" como respaldo
+  // Toma la API key configurada en .env
   const tinyApiKey = import.meta.env.VITE_TINYMCE_API_KEY || "no-api-key";
 
   const handleChange = (field, value) => {
@@ -78,9 +78,12 @@ export function PostFormModal({ post, onClose, onSaved }) {
     }
   };
 
+  // Si la imagen ya es una URL remota de Cloudinary (empieza con http), se usa directa.
   const existingImageUrl =
     isEdit && typeof form.imagen === "string"
-      ? `${POST_IMAGE_BASE_URL}/${form.imagen}`
+      ? form.imagen.startsWith("http")
+        ? form.imagen
+        : `${POST_IMAGE_BASE_URL}/${form.imagen}`
       : null;
 
   return (

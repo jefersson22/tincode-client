@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-const MAX_IMAGE_SIZE_MB = 3;
+const MAX_IMAGE_SIZE_MB = 10;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const PATH_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
