@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   getPostsRequest,
   deletePostRequest,
-  POST_IMAGE_BASE_URL,
+  getPostImageUrl,
 } from "../../../services/postsService";
 import { PostFormModal } from "./PostFormModal";
 import { usePermissions } from "../../../hooks/usePermissions";
@@ -146,8 +146,8 @@ export function Blog() {
             <div className="post-card_image">
               {post.miniature ? (
                 <img
-                  src={`${POST_IMAGE_BASE_URL}/${post.miniature}`}
-                  alt={post.title}
+                  src={getPostImageUrl(post.miniature)}
+                  alt={post.title || "Imagen del post"}
                 />
               ) : (
                 <div className="post-card_image-placeholder">📄</div>

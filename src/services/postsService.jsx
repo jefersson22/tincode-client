@@ -3,6 +3,25 @@ import { apiFetch } from "./apiClient";
 const BASE_SERVER_URL = (import.meta.env.VITE_API_URL || "http://localhost:3977").replace(/\/api(\/v\d+)?\/?$/, "");
 export const POST_IMAGE_BASE_URL = `${BASE_SERVER_URL}/uploads/post`;
 
+export function getPostImageUrl(miniature) {
+  if (!miniature || typeof miniature !== "string") return null;
+
+  if (miniature.startsWith("http") || miniature.startsWith("blob:") || miniature.startsWith("data:")) {
+    return miniature;
+  }
+
+  let path = miniature.replace(/\\/g, "/");
+  if (path.startsWith("/")) path = path.slice(1);
+
+  if (path.startsWith("uploads/")) {
+    return `${BASE_SERVER_URL}/${path}`;
+  }
+  if (path.startsWith("post/")) {
+    return `${BASE_SERVER_URL}/uploads/${path}`;
+  }
+  return `${POST_IMAGE_BASE_URL}/${path}`;
+}
+
 async function handleResponse(res) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.msg || data.message || "Error en la solicitud");
