@@ -11,7 +11,6 @@ const ITEMS_PER_PAGE = 6;
 
 export function Newsletter() {
   const { hasRole } = usePermissions();
-  // Permite acciones si es editor o admin
   const canManage = hasRole("editor") || hasRole("admin");
 
   const [subscribers, setSubscribers] = useState([]);
@@ -20,7 +19,7 @@ export function Newsletter() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState("all"); // all | active | inactive
+  const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
@@ -55,7 +54,6 @@ export function Newsletter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, filter]);
 
-  // Búsqueda con debounce: espera 400ms tras dejar de escribir
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCurrentPage(1);
@@ -96,7 +94,6 @@ export function Newsletter() {
       setTotalDocs((prev) => prev - 1);
       setConfirmDeleteId(null);
       
-      // Si la página actual se quedó vacía y no es la primera, retrocede una
       if (subscribers.length === 1 && currentPage > 1) {
         setCurrentPage((prev) => prev - 1);
       }
@@ -117,14 +114,15 @@ export function Newsletter() {
   };
 
   return (
-    <div className="newsletter-page">
+    <div className="newsletter-page notranslate" translate="no">
       <div className="newsletter-page_toolbar">
         <div className="newsletter-page_filters">
           <button
             className={filter === "all" ? "active" : ""}
             onClick={() => changeFilter("all")}
           >
-            Todos {filter === "all" && totalDocs ? <span>{totalDocs}</span> : null}
+            <span>Todos</span>
+            {filter === "all" && Boolean(totalDocs) && <span>{totalDocs}</span>}
           </button>
           <button
             className={filter === "active" ? "active" : ""}
@@ -178,7 +176,7 @@ export function Newsletter() {
 
       {!loading && !error && (
         <p className="newsletter-page_total">
-          {totalDocs} suscriptor{totalDocs !== 1 ? "es" : ""} en total
+          {`${totalDocs} suscriptor${totalDocs !== 1 ? "es" : ""} en total`}
         </p>
       )}
 
