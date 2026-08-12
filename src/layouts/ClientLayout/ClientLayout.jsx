@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { TopBar } from "../../Components/TopBar";
-import { Footer } from "../../Components/Footer";
+import { TopBar } from "../../components/TopBar";
+import { Footer } from "../../components/Footer";
 import "./ClientLayout.scss";
 
 export function ClientLayout() {
