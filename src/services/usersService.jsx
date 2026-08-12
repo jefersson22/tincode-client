@@ -72,6 +72,7 @@ export async function updateUserRequest(id, formValues, avatarFile) {
   formData.append("lastname", formValues.lastname);
   formData.append("email", formValues.email);
   formData.append("role", formValues.role);
+  if (formValues.active !== undefined) formData.append("active", String(formValues.active));
   if (formValues.password) formData.append("password", formValues.password);
   if (avatarFile) formData.append("avatar", avatarFile);
 

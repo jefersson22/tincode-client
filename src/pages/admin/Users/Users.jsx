@@ -17,6 +17,11 @@ function UserAvatar({ avatar, firstname }) {
   const avatarUrl = getAvatarUrl(avatar);
   const initial = firstname?.charAt(0)?.toUpperCase() || "U";
 
+  // Reinicia el estado de error cuando cambia la imagen o el usuario
+  useEffect(() => {
+    setHasError(false);
+  }, [avatar]);
+
   if (!avatarUrl || hasError) {
     return <span>{initial}</span>;
   }
