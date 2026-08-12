@@ -39,10 +39,11 @@ export function PostImageUploader({ value, onChange, error, existingImageUrl }) 
             <button
               type="button"
               onClick={handleRemove}
-              className="post-image-uploader_remove"
+              className="post-image-uploader_remove notranslate"
+              translate="no"
               title="Quitar imagen"
             >
-              X
+              ✕
             </button>
           </>
         ) : (
