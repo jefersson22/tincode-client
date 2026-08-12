@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3977/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3977/api/v1';
 
 async function handleResponse(res) {
   const data = await res.json();
@@ -14,7 +14,7 @@ export async function loginRequest(email, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
   });
-  return handleResponse(res); // { msg, access, refresh }
+  return handleResponse(res);
 }
 
 export async function registerRequest(userData) {
@@ -32,7 +32,7 @@ export async function registerRequest(userData) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  return handleResponse(res); // { msg, user }
+  return handleResponse(res);
 }
 
 export async function refreshAccessTokenRequest(refreshToken) {
@@ -41,5 +41,5 @@ export async function refreshAccessTokenRequest(refreshToken) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ token: refreshToken }),
   });
-  return handleResponse(res); // { accessToken }
+  return handleResponse(res);
 }

@@ -1,21 +1,17 @@
 import { apiFetch } from "./apiClient";
 
-export const AVATAR_BASE_URL = "http://localhost:3977";
+export const AVATAR_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:3977").replace(/\/api(\/v\d+)?\/?$/, "");
 
-// Helper universal para procesar y construir la URL completa del avatar
 export function getAvatarUrl(avatar) {
   if (!avatar || typeof avatar !== "string") return null;
   
-  // Si ya es una URL completa o de vista previa temporal (blob/data)
   if (avatar.startsWith("http") || avatar.startsWith("blob:") || avatar.startsWith("data:")) {
     return avatar;
   }
 
-  // Corregir barras invertidas de Windows si las hubiera (\ -> /)
   let path = avatar.replace(/\\/g, "/");
   if (path.startsWith("/")) path = path.slice(1);
 
-  // Asegurar prefijo /uploads/
   if (path.startsWith("uploads/")) {
     return `${AVATAR_BASE_URL}/${path}`;
   }
@@ -25,7 +21,6 @@ export function getAvatarUrl(avatar) {
   return `${AVATAR_BASE_URL}/uploads/avatar/${path}`;
 }
 
-// Normaliza las claves de usuarios antiguos (firstName/lastName -> firstname/lastname)
 function normalizeUser(user) {
   if (!user) return user;
   return {
@@ -46,7 +41,6 @@ export async function getUsersRequest(activeFilter) {
   const res = await apiFetch(`/users${query}`);
   const data = await handleResponse(res);
   
-  // Normalizamos toda la lista de usuarios devuelta por el backend
   const users = Array.isArray(data.response) ? data.response : [];
   return users.map(normalizeUser);
 }

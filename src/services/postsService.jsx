@@ -1,6 +1,7 @@
 import { apiFetch } from "./apiClient";
 
-export const POST_IMAGE_BASE_URL = "http://localhost:3977/uploads/post";
+const BASE_SERVER_URL = (import.meta.env.VITE_API_URL || "http://localhost:3977").replace(/\/api(\/v\d+)?\/?$/, "");
+export const POST_IMAGE_BASE_URL = `${BASE_SERVER_URL}/uploads/post`;
 
 async function handleResponse(res) {
   const data = await res.json();
@@ -40,7 +41,6 @@ export async function updatePostRequest(id, formValues, imageFile) {
   
   if (imageFile) formData.append("miniature", imageFile);
   
-  // Cambiado de "PUT" a "PATCH" para coincidir con la ruta del backend
   const res = await apiFetch(`/post/${id}`, { method: "PATCH", body: formData });
   return handleResponse(res);
 }

@@ -1,8 +1,7 @@
 import { apiFetch } from "./apiClient";
 
-export const COURSE_IMAGE_BASE_URL = "http://localhost:3977";
+export const COURSE_IMAGE_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:3977").replace(/\/api(\/v\d+)?\/?$/, "");
 
-// Helper para obtener la URL formateada de la miniatura
 export function getCourseImageUrl(imagePath) {
   if (!imagePath) return null;
   if (
