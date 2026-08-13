@@ -11,6 +11,17 @@ import "./Courses.scss";
 
 const ITEMS_PER_PAGE = 6;
 
+function formatCourseUrl(url) {
+  if (!url) return "#";
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  if (url.startsWith("/")) {
+    return url;
+  }
+  return `https://${url}`;
+}
+
 export function Courses() {
   const { hasRole } = usePermissions();
   const canManage = hasRole("editor") || hasRole("admin");
@@ -26,6 +37,7 @@ export function Courses() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [failedImages, setFailedImages] = useState({});
 
   const activeFilterValue =
     filter === "active" ? true : filter === "inactive" ? false : undefined;
@@ -39,7 +51,7 @@ export function Courses() {
       setTotalPages(data.totalPages || 1);
       setTotalDocs(data.totalDocs || 0);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Error al cargar los cursos");
     } finally {
       setLoading(false);
     }
@@ -73,6 +85,10 @@ export function Courses() {
     setModalOpen(true);
   };
 
+  const handleImageError = (courseId) => {
+    setFailedImages((prev) => ({ ...prev, [courseId]: true }));
+  };
+
   const handleToggleStatus = async (course) => {
     try {
       await toggleCourseStatusRequest(course._id, !course.active);
@@ -87,9 +103,12 @@ export function Courses() {
   const handleDelete = async (id) => {
     try {
       await deleteCourseRequest(id);
-      setCourses((prev) => prev.filter((c) => c._id !== id));
       setConfirmDeleteId(null);
-      loadCourses(currentPage);
+      if (courses.length === 1 && currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      } else {
+        loadCourses(currentPage);
+      }
     } catch (err) {
       alert(err.message);
     }
@@ -170,11 +189,17 @@ export function Courses() {
       <div className="courses-grid">
         {filteredCourses.map((course) => {
           const imageUrl = getCourseImageUrl(course.miniature);
+          const isImageBroken = failedImages[course._id];
+
           return (
             <div key={course._id} className="course-card">
               <div className="course-card_image">
-                {imageUrl ? (
-                  <img src={imageUrl} alt={course.title} />
+                {course.miniature && imageUrl && !isImageBroken ? (
+                  <img
+                    src={imageUrl}
+                    alt={course.title || "Curso"}
+                    onError={() => handleImageError(course._id)}
+                  />
                 ) : (
                   <div className="course-card_image-placeholder">📚</div>
                 )}
@@ -193,13 +218,15 @@ export function Courses() {
               </div>
 
               <div className="course-card_body">
-                <h3 className="course-card_title">{course.title}</h3>
-                <p className="course-card_description">{course.description}</p>
+                <h3 className="course-card_title">{course.title || "(Sin título)"}</h3>
+                <p className="course-card_description">
+                  {course.description || "Sin descripción."}
+                </p>
                 <div className="course-card_meta">
-                  <span className="price">S/ {course.price}</span>
+                  <span className="price">S/ {course.price ?? 0}</span>
                   {course.url && (
                     <a
-                      href={course.url}
+                      href={formatCourseUrl(course.url)}
                       target="_blank"
                       rel="noreferrer"
                       className="course-card_link"

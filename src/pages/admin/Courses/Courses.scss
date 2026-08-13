@@ -23,6 +23,11 @@
       font-size: 13px;
       color: #64748b;
       cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f8fafc;
+      }
 
       &.active {
         background: #0b2f6b;
@@ -35,6 +40,8 @@
   &_actions {
     display: flex;
     gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   &_new-btn {
@@ -46,6 +53,7 @@
     font-weight: 600;
     font-size: 13px;
     cursor: pointer;
+    transition: opacity 0.2s ease;
 
     &:hover {
       opacity: 0.9;
@@ -56,6 +64,7 @@
     color: #8a94a6;
     font-size: 14px;
     padding: 24px 0;
+    text-align: center;
 
     &--error {
       color: #e74c3c;
@@ -90,6 +99,7 @@
   border: 1px solid #e5e9f2;
   font-size: 13px;
   width: 240px;
+  transition: border-color 0.2s ease;
 
   &::placeholder {
     color: #94a3b8;
@@ -104,7 +114,7 @@
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  gap: 20px;
 }
 
 .course-card {
@@ -113,17 +123,27 @@
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(11, 47, 107, 0.06);
   border: 1px solid #eef1f7;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(11, 47, 107, 0.1);
+  }
 
   &_image {
     position: relative;
     width: 100%;
-    height: 140px;
+    height: 150px;
     background: linear-gradient(135deg, #0b2f6b, #3b95ff);
+    overflow: hidden;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
     }
 
     &-placeholder {
@@ -133,7 +153,7 @@
       align-items: center;
       justify-content: center;
       font-size: 40px;
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.8);
     }
   }
 
@@ -144,8 +164,9 @@
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 3px 9px;
+    padding: 4px 10px;
     border-radius: 999px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     &--active {
       background: #e6f7ee;
@@ -162,33 +183,41 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
     color: white;
     font-size: 11px;
     font-weight: 700;
     padding: 3px 8px;
     border-radius: 999px;
+    backdrop-filter: blur(4px);
   }
 
   &_body {
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
   &_title {
     margin: 0 0 6px;
     font-size: 15px;
     color: #0b2f6b;
+    font-weight: 700;
+    line-height: 1.3;
   }
 
   &_description {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     font-size: 12px;
     color: #8a94a6;
+    line-height: 1.5;
     display: -webkit-box;
     line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex: 1;
   }
 
   &_meta {
@@ -202,6 +231,7 @@
     .price {
       font-weight: 700;
       color: #0b2f6b;
+      font-size: 13px;
     }
   }
 
@@ -225,11 +255,12 @@
     button {
       flex: 1;
       background: #f8fafc;
-      border: none;
+      border: 1px solid #eef2f7;
       border-radius: 8px;
       padding: 6px 0;
       cursor: pointer;
       font-size: 14px;
+      transition: background 0.2s ease;
 
       &:hover {
         background: #eef2f7;
@@ -237,6 +268,7 @@
 
       &.danger:hover {
         background: #fdecea;
+        border-color: #fca5a5;
       }
     }
   }
@@ -250,19 +282,23 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(2px);
 }
 
 .confirm-box {
   background: white;
   padding: 24px;
-  border-radius: 12px;
+  border-radius: 14px;
   max-width: 320px;
+  width: 90%;
   text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 
   p {
-    margin: 0 0 16px;
+    margin: 0 0 18px;
     font-size: 14px;
     color: #334155;
+    line-height: 1.5;
   }
 
   &_actions {
@@ -271,16 +307,27 @@
 
     button {
       flex: 1;
-      padding: 8px;
+      padding: 9px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
       font-weight: 600;
+      font-size: 13px;
       background: #f1f5f9;
+      color: #475569;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #e2e8f0;
+      }
 
       &.danger {
         background: #e74c3c;
         color: white;
+
+        &:hover {
+          background: #dc2626;
+        }
       }
     }
   }
@@ -303,6 +350,7 @@
     font-size: 13px;
     color: #0b2f6b;
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover:not(:disabled) {
       background: #f1f5f9;
@@ -316,7 +364,7 @@
 
   &_pages {
     display: flex;
-    gap: 4px;
+    gap: 6px;
 
     button {
       width: 36px;
@@ -328,6 +376,7 @@
       font-weight: 600;
       font-size: 13px;
       cursor: pointer;
+      transition: all 0.2s ease;
 
       &:hover {
         background: #f1f5f9;
