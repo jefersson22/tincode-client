@@ -4,19 +4,31 @@ import "./Courses.scss";
 
 const ITEMS_PER_PAGE = 6;
 
+// Helper para asegurar que la URL sea un enlace externo valido y no rompa React Router
+function formatCourseUrl(url) {
+  if (!url) return "#";
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  if (url.startsWith("/")) {
+    return url;
+  }
+  return `https://${url}`;
+}
+
 export function Courses() {
   const [courses, setCourses] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [failedImages, setFailedImages] = useState({});
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       setError(null);
       try {
-        // true = solo cursos activos, ocultamos los inactivos al público
         const data = await getCoursesRequest(currentPage, ITEMS_PER_PAGE, true);
         setCourses(data.docs || data.courses || []);
         setTotalPages(data.totalPages || 1);
@@ -27,6 +39,10 @@ export function Courses() {
       }
     })();
   }, [currentPage]);
+
+  const handleImageError = (courseId) => {
+    setFailedImages((prev) => ({ ...prev, [courseId]: true }));
+  };
 
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
@@ -62,49 +78,55 @@ export function Courses() {
         
         {!loading && !error && courses.length > 0 && (
           <div className="tc-courses-grid">
-            {courses.map((course) => (
-              <div key={course._id} className="tc-course-item">
-                <div className="tc-course-item_image">
-                  {course.miniature ? (
-                    <img
-                      src={getCourseImageUrl(course.miniature)}
-                      alt={course.title}
-                    />
-                  ) : (
-                    <div className="tc-course-item_placeholder"></div>
-                  )}
-                  {course.score !== undefined && course.score !== null && (
-                    <span className="tc-course-item_score">
-                      ★ {course.score}
-                    </span>
-                  )}
-                </div>
-                
-                <div className="tc-course-item_body">
-                  <h3>{course.title}</h3>
-                  <p>{course.description}</p>
-                  <div className="tc-course-item_footer">
-                    <span className="tc-course-item_price">
-                      S/ {course.price}
-                    </span>
-                    {course.url ? (
-                      <a
-                        href={course.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="tc-course-item__cta"
-                      >
-                        Ver curso →
-                      </a>
+            {courses.map((course) => {
+              const imageUrl = getCourseImageUrl(course.miniature);
+              const isImageBroken = failedImages[course._id];
+
+              return (
+                <div key={course._id} className="tc-course-item">
+                  <div className="tc-course-item_image">
+                    {course.miniature && imageUrl && !isImageBroken ? (
+                      <img
+                        src={imageUrl}
+                        alt={course.title}
+                        onError={() => handleImageError(course._id)}
+                      />
                     ) : (
-                      <span className="tc-course-item__cta tc-course-item__cta--disabled">
-                        Próximamente
+                      <div className="tc-course-item_placeholder"></div>
+                    )}
+                    {course.score !== undefined && course.score !== null && (
+                      <span className="tc-course-item_score">
+                        ★ {course.score}
                       </span>
                     )}
                   </div>
+                  
+                  <div className="tc-course-item_body">
+                    <h3>{course.title}</h3>
+                    <p>{course.description}</p>
+                    <div className="tc-course-item_footer">
+                      <span className="tc-course-item_price">
+                        S/ {course.price}
+                      </span>
+                      {course.url ? (
+                        <a
+                          href={formatCourseUrl(course.url)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="tc-course-item__cta"
+                        >
+                          Ver curso →
+                        </a>
+                      ) : (
+                        <span className="tc-course-item__cta tc-course-item__cta--disabled">
+                          Próximamente
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
