@@ -1,14 +1,48 @@
 // ==========================================
-// Auth.scss - Login y Registro (diseño moderno de 2 paneles)
+// Auth.scss - Login y Registro con animaciones
 // ==========================================
 
-// Importa tus colores globales
 @import "../../../scss/index.scss";
 
 $radius: 12px;
 $transition: all 0.25s ease;
 $text-muted: rgba($text-light, 0.7);
 
+// ---------- Keyframes de entrada ----------
+@keyframes authFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes authScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseCircle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.35;
+  }
+}
+
+// ---------- Estructura principal ----------
 .auth-page {
   display: flex;
   height: 100vh;
@@ -16,7 +50,7 @@ $text-muted: rgba($text-light, 0.7);
   background-color: $background-dark;
 }
 
-// ---------- Panel de marca ----------
+// ---------- Panel de marca (Izquierda) ----------
 .auth-panel--brand {
   display: none;
 
@@ -33,12 +67,13 @@ $text-muted: rgba($text-light, 0.7);
     &::before {
       content: "";
       position: absolute;
-      width: 550px;
-      height: 550px;
+      width: 580px;
+      height: 580px;
       border-radius: 50%;
       background: rgba($primary, 0.25);
       top: -150px;
       right: -150px;
+      animation: pulseCircle 8s infinite ease-in-out;
     }
   }
 }
@@ -46,35 +81,44 @@ $text-muted: rgba($text-light, 0.7);
 .auth-panel__content {
   position: relative;
   z-index: 1;
-  max-width: 440px;
+  max-width: 460px;
   padding: 2.5rem 2rem;
   text-align: center;
   color: $text-light;
 
   h1 {
-    font-size: 2.4rem;
+    font-size: 2.75rem; /* Título agrandado */
     font-weight: 800;
-    line-height: 1.2;
+    line-height: 1.18;
     letter-spacing: -0.5px;
     margin: 1.75rem 0 1rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+
+    // Animación de entrada para el título
+    animation: authFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
   }
 
   p {
-    font-size: 1.05rem;
+    font-size: 1.15rem; /* Subtítulo agrandado */
     color: $text-muted;
     line-height: 1.6;
+
+    // Animación de entrada para la descripción
+    animation: authFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
   }
 }
 
 .auth-panel__logo {
-  width: 110px;
-  height: 110px;
+  width: 140px; /* Logo agrandado */
+  height: 140px;
   object-fit: contain;
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+
+  // Animación de escala para el logo
+  animation: authScaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards;
 }
 
-// ---------- Panel de formulario ----------
+// ---------- Panel de formulario (Derecha) ----------
 .auth-panel--form {
   flex: 1;
   display: flex;
@@ -87,12 +131,15 @@ $text-muted: rgba($text-light, 0.7);
 
 .auth-box {
   width: 100%;
-  max-width: 400px;
+  max-width: 410px;
   background: $background-dark-web;
   border: 1px solid rgba($border-grey, 0.25);
   border-radius: $radius;
-  padding: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  padding: 2.25rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+  // Animación de entrada suave del formulario
+  animation: authFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
 }
 
 // ---------- Tabs Login / Registro ----------
@@ -108,7 +155,7 @@ $text-muted: rgba($text-light, 0.7);
     flex: 1;
     position: relative;
     z-index: 1;
-    padding: 0.6rem 0.5rem;
+    padding: 0.65rem 0.5rem;
     background: transparent;
     border: none;
     border-radius: calc(#{$radius} - 4px);
@@ -154,7 +201,7 @@ $text-muted: rgba($text-light, 0.7);
   }
 
   input {
-    padding: 0.7rem 0.85rem;
+    padding: 0.75rem 0.9rem;
     background-color: rgba($text-light, 0.04);
     color: $text-light;
     border: 1px solid rgba($border-grey, 0.35);
@@ -216,7 +263,7 @@ $text-muted: rgba($text-light, 0.7);
 
 .auth-submit {
   margin-top: 0.25rem;
-  padding: 0.75rem;
+  padding: 0.8rem;
   background: linear-gradient(135deg, $primary, $primary-hover);
   color: $text-light;
   font-weight: 600;
