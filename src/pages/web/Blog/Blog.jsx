@@ -18,12 +18,22 @@ function formatDate(dateStr) {
   });
 }
 
+// Helper inteligente para formatear la URL de la imagen
+function getImageUrl(miniature) {
+  if (!miniature) return null;
+  if (miniature.startsWith("http://") || miniature.startsWith("https://")) {
+    return miniature;
+  }
+  return `${POST_IMAGE_BASE_URL}/${miniature}`.replace(/([^:]\/)\/+/g, "$1");
+}
+
 export function Blog() {
   const [posts, setPosts] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [failedImages, setFailedImages] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -40,6 +50,10 @@ export function Blog() {
       }
     })();
   }, [currentPage]);
+
+  const handleImageError = (postId) => {
+    setFailedImages((prev) => ({ ...prev, [postId]: true }));
+  };
 
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
@@ -75,29 +89,35 @@ export function Blog() {
 
         {!loading && !error && posts.length > 0 && (
           <div className="tc-blog-grid">
-            {posts.map((post) => (
-              <Link key={post._id} to={`/blog/${post.path || post._id}`} className="tc-post-item">
-                <div className="tc-post-item_image">
-                  {post.miniature ? (
-                    <img
-                      src={`${POST_IMAGE_BASE_URL}/${post.miniature}`}
-                      alt={post.title}
-                    />
-                  ) : (
-                    <div className="tc-post-item_placeholder"></div>
-                  )}
-                </div>
-                
-                <div className="tc-post-item_body">
-                  <span className="tc-post-item_date">
-                    {formatDate(post.created_at)}
-                  </span>
-                  <h3>{post.title || "(Sin título)"}</h3>
-                  <p>{stripHtml(post.content).slice(0, 120)}...</p>
-                  <span className="tc-post-item__cta">Leer más →</span>
-                </div>
-              </Link>
-            ))}
+            {posts.map((post) => {
+              const imageUrl = getImageUrl(post.miniature);
+              const isImageBroken = failedImages[post._id];
+
+              return (
+                <Link key={post._id} to={`/blog/${post.path || post._id}`} className="tc-post-item">
+                  <div className="tc-post-item_image">
+                    {imageUrl && !isImageBroken ? (
+                      <img
+                        src={imageUrl}
+                        alt={post.title || "Imagen del post"}
+                        onError={() => handleImageError(post._id)}
+                      />
+                    ) : (
+                      <div className="tc-post-item_placeholder"></div>
+                    )}
+                  </div>
+                  
+                  <div className="tc-post-item_body">
+                    <span className="tc-post-item_date">
+                      {formatDate(post.created_at)}
+                    </span>
+                    <h3>{post.title || "(Sin título)"}</h3>
+                    <p>{stripHtml(post.content).slice(0, 120)}...</p>
+                    <span className="tc-post-item__cta">Leer más →</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
 
