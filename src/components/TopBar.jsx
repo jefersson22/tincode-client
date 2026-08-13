@@ -4,10 +4,18 @@ import { Logo } from "./Logo";
 import { getMenusRequest } from "../services/menusService";
 import "./TopBar.scss";
 
+// Menú por defecto mientras carga o si la base de datos no retorna ítems
+const DEFAULT_NAV_LINKS = [
+  { _id: "def-1", title: "Inicio", path: "/" },
+  { _id: "def-2", title: "Cursos", path: "/courses" },
+  { _id: "def-3", title: "Blog", path: "/blog" },
+  { _id: "def-4", title: "Contacto", path: "/contact" },
+];
+
 export function TopBar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItems, setMenuItems] = useState(DEFAULT_NAV_LINKS);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -22,13 +30,15 @@ export function TopBar() {
     };
   }, [menuOpen]);
 
-  // Cargar menús activos directamente desde tu servicio
+  // Cargar menús activos desde la API
   useEffect(() => {
     (async () => {
       try {
-        const data = await getMenusRequest(true); // Solicita solo activos (active=true)
-        if (Array.isArray(data) && data.length > 0) {
-          const sorted = [...data].sort((a, b) => (a.order || 0) - (b.order || 0));
+        const data = await getMenusRequest(true);
+        const list = Array.isArray(data) ? data : data?.docs || data?.menus || [];
+
+        if (list.length > 0) {
+          const sorted = [...list].sort((a, b) => (a.order || 0) - (b.order || 0));
           setMenuItems(sorted);
         }
       } catch (err) {
@@ -41,11 +51,12 @@ export function TopBar() {
     const path = item.path || item.url || item.to || "/";
     const title = item.title || item.name || item.label || "Enlace";
     const isExternal = path.startsWith("http://") || path.startsWith("https://");
+    const uniqueKey = item._id || `${path}-${title}`;
 
     if (isExternal) {
       return (
         <a
-          key={item._id || path}
+          key={uniqueKey}
           href={path}
           target="_blank"
           rel="noreferrer"
@@ -59,7 +70,7 @@ export function TopBar() {
 
     return (
       <NavLink
-        key={item._id || path}
+        key={uniqueKey}
         to={path}
         onClick={() => isMobile && setMenuOpen(false)}
         className={({ isActive }) =>
