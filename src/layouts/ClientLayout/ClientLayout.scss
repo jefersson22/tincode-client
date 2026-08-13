@@ -1,9 +1,47 @@
+// ==========================================
+// ClientLayout.scss - Maquetación Vista Pública
+// ==========================================
+
+@import "../../scss/index.scss";
+
 .tc-client-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #ffffff;
+  background-color: $background-dark;
+  color: $text-light;
+
+  // Contenido dinámico (Outlet)
   &_main {
-    flex: 1;
+    flex: 1; // Empuja el Footer al final si hay poco contenido
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    box-sizing: border-box;
+
+    // Animación sutil de entrada para cada vista (Cursos, Blog, Home)
+    animation: clientPageFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+// Transición entre vistas públicas
+@keyframes clientPageFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Ajustes responsivos para pantallas móviles
+@media (max-width: 768px) {
+  .tc-client-layout {
+    &_main {
+      padding: 1.5rem 1rem;
+    }
   }
 }

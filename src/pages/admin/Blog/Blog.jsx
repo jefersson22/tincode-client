@@ -25,6 +25,7 @@ export function Blog() {
   const [editingPost, setEditingPost] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [failedImages, setFailedImages] = useState({});
 
   const loadPosts = async (page) => {
     setLoading(true);
@@ -97,6 +98,10 @@ export function Blog() {
 
   const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "");
 
+  const handleImageError = (postId) => {
+    setFailedImages((prev) => ({ ...prev, [postId]: true }));
+  };
+
   return (
     <div className="posts-page">
       <div className="posts-page_toolbar">
@@ -141,41 +146,47 @@ export function Blog() {
       )}
 
       <div className="posts-grid">
-        {filteredPosts.map((post) => (
-          <div key={post._id} className="post-card">
-            <div className="post-card_image">
-              {post.miniature ? (
-                <img
-                  src={getPostImageUrl(post.miniature)}
-                  alt={post.title || "Imagen del post"}
-                />
-              ) : (
-                <div className="post-card_image-placeholder">📄</div>
+        {filteredPosts.map((post) => {
+          const imageUrl = getPostImageUrl(post.miniature);
+          const isImageBroken = failedImages[post._id];
+
+          return (
+            <div key={post._id} className="post-card">
+              <div className="post-card_image">
+                {post.miniature && imageUrl && !isImageBroken ? (
+                  <img
+                    src={imageUrl}
+                    alt={post.title || "Imagen del post"}
+                    onError={() => handleImageError(post._id)}
+                  />
+                ) : (
+                  <div className="post-card_image-placeholder">📄</div>
+                )}
+              </div>
+              <div className="post-card_body">
+                <h3 className="post-card_title">{post.title || "(Sin título)"}</h3>
+                <p className="post-card_excerpt">
+                  {stripHtml(post.content).slice(0, 110)}
+                  {stripHtml(post.content).length > 110 ? "..." : ""}
+                </p>
+                <span className="post-card_date">{formatDate(post.created_at)}</span>
+              </div>
+              {canManage && (
+                <div className="post-card_actions">
+                  <button onClick={() => openEditModal(post)} title="Editar">✏️</button>
+                  <button
+                    onClick={() => setConfirmDeleteId(post._id)}
+                    title="Eliminar"
+                    className="danger"
+                    disabled={deletingId === post._id}
+                  >
+                    {deletingId === post._id ? "..." : "🗑️"}
+                  </button>
+                </div>
               )}
             </div>
-            <div className="post-card_body">
-              <h3 className="post-card_title">{post.title || "(Sin título)"}</h3>
-              <p className="post-card_excerpt">
-                {stripHtml(post.content).slice(0, 110)}
-                {stripHtml(post.content).length > 110 ? "..." : ""}
-              </p>
-              <span className="post-card_date">{formatDate(post.created_at)}</span>
-            </div>
-            {canManage && (
-              <div className="post-card_actions">
-                <button onClick={() => openEditModal(post)} title="Editar">✏️</button>
-                <button
-                  onClick={() => setConfirmDeleteId(post._id)}
-                  title="Eliminar"
-                  className="danger"
-                  disabled={deletingId === post._id}
-                >
-                  {deletingId === post._id ? "..." : "🗑️"}
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {!loading && totalPages > 1 && (
