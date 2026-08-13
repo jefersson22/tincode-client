@@ -2,17 +2,13 @@ import { useState, useEffect } from "react";
 import { getCoursesRequest, getCourseImageUrl } from "../../../services/coursesService";
 import "./Courses.scss";
 
-const ITEMS_PER_PAGE = 6;
+// Límite de 2 cursos por página para forzar el uso de flechas de navegación
+const ITEMS_PER_PAGE = 2;
 
-// Helper para asegurar que la URL sea un enlace externo válido y no rompa React Router
 function formatCourseUrl(url) {
   if (!url) return "#";
-  if (url.startsWith("http://") || url.startsWith("https://")) {
-    return url;
-  }
-  if (url.startsWith("/")) {
-    return url;
-  }
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  if (url.startsWith("/")) return url;
   return `https://${url}`;
 }
 
@@ -130,6 +126,7 @@ export function Courses() {
           </div>
         )}
 
+        {/* Muestra paginación siempre que existan más de 1 página */}
         {!loading && totalPages > 1 && (
           <div className="tc-courses-pagination">
             <button
