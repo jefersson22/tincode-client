@@ -4,7 +4,7 @@ import "./Courses.scss";
 
 const ITEMS_PER_PAGE = 6;
 
-// Helper para asegurar que la URL sea un enlace externo valido y no rompa React Router
+// Helper para asegurar que la URL sea un enlace externo válido y no rompa React Router
 function formatCourseUrl(url) {
   if (!url) return "#";
   if (url.startsWith("http://") || url.startsWith("https://")) {
@@ -33,7 +33,7 @@ export function Courses() {
         setCourses(data.docs || data.courses || []);
         setTotalPages(data.totalPages || 1);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "Error al cargar los cursos");
       } finally {
         setLoading(false);
       }
@@ -88,7 +88,7 @@ export function Courses() {
                     {course.miniature && imageUrl && !isImageBroken ? (
                       <img
                         src={imageUrl}
-                        alt={course.title}
+                        alt={course.title || "Curso"}
                         onError={() => handleImageError(course._id)}
                       />
                     ) : (
@@ -102,11 +102,11 @@ export function Courses() {
                   </div>
                   
                   <div className="tc-course-item_body">
-                    <h3>{course.title}</h3>
-                    <p>{course.description}</p>
+                    <h3>{course.title || "(Sin título)"}</h3>
+                    <p>{course.description || "Sin descripción disponible."}</p>
                     <div className="tc-course-item_footer">
                       <span className="tc-course-item_price">
-                        S/ {course.price}
+                        S/ {course.price ?? 0}
                       </span>
                       {course.url ? (
                         <a
@@ -135,6 +135,7 @@ export function Courses() {
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
+              className="pagination-btn"
             >
               ← Anterior
             </button>
@@ -152,6 +153,7 @@ export function Courses() {
             <button
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
+              className="pagination-btn"
             >
               Siguiente →
             </button>
